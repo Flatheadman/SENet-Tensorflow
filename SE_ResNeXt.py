@@ -23,8 +23,8 @@ thus, total number of layers = (3*blocks)*residual_layer_num + 2
 
 reduction_ratio = 4
 
-batch_size = 128
-iteration = 391
+batch_size = 32
+iteration = 1563
 # 128 * 391 ~ 50,000
 
 test_iteration = 100
