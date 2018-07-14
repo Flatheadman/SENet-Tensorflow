@@ -98,6 +98,14 @@ def Evaluate(sess):
 
     return test_acc, test_loss, summary
 
+def parallel_shuffle(a, b):
+    a = a.tolist（）
+    b = b.tolist()
+    c = list(zip(a, b))
+    random.shuffle(c)
+    a, b = zip(*c)
+    return np.array(a),np.array(b)
+
 class SE_ResNeXt():
     def __init__(self, x, training):
         self.training = training
@@ -253,6 +261,8 @@ with tf.Session(config=tf.ConfigProto(allow_soft_placement=True)) as sess:
             else:
                 batch_x = train_x[pre_index:]
                 batch_y = train_y[pre_index:]
+                
+            batch_x, batch_y = parallel_shuffle(batch_x, batch_y)
 
             batch_x = data_augmentation(batch_x)
 
