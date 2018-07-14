@@ -4,6 +4,7 @@ from tensorflow.contrib.layers import batch_norm, flatten
 from tensorflow.contrib.framework import arg_scope
 from cifar10 import *
 import numpy as np
+import time
 
 weight_decay = 0.0005
 momentum = 0.9
@@ -26,7 +27,7 @@ batch_size = 128
 iteration = 391
 # 128 * 391 ~ 50,000
 
-test_iteration = 10
+test_iteration = 100
 
 total_epochs = 100
 
@@ -70,7 +71,7 @@ def Evaluate(sess):
     test_acc = 0.0
     test_loss = 0.0
     test_pre_index = 0
-    add = 1000
+    add = 100
 
     for it in range(test_iteration):
         test_batch_x = test_x[test_pre_index: test_pre_index + add]
@@ -225,7 +226,7 @@ accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
 saver = tf.train.Saver(tf.global_variables())
 
-with tf.Session() as sess:
+with tf.Session(config=tf.ConfigProto(allow_soft_placement=True)) as sess:
     ckpt = tf.train.get_checkpoint_state('./model')
     if ckpt and tf.train.checkpoint_exists(ckpt.model_checkpoint_path):
         saver.restore(sess, ckpt.model_checkpoint_path)
@@ -244,6 +245,8 @@ with tf.Session() as sess:
         train_loss = 0.0
 
         for step in range(1, iteration + 1):
+            print(time.time())
+            print("epoch "+str(epoch)+" step "+str(step))
             if pre_index + batch_size < 50000:
                 batch_x = train_x[pre_index: pre_index + batch_size]
                 batch_y = train_y[pre_index: pre_index + batch_size]
