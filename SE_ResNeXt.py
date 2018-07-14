@@ -99,7 +99,7 @@ def Evaluate(sess):
     return test_acc, test_loss, summary
 
 def parallel_shuffle(a, b):
-    a = a.tolist（）
+    a = a.tolist()
     b = b.tolist()
     c = list(zip(a, b))
     random.shuffle(c)
